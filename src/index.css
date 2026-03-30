@@ -1,0 +1,77 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 245 100% 96%;
+    --foreground: 0 0% 12%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 0 0% 12%;
+
+    --popover: 245 100% 96%;
+    --popover-foreground: 0 0% 12%;
+
+    --primary: 267 83% 53%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 245 100% 92%;
+    --secondary-foreground: 267 83% 53%;
+
+    --muted: 245 20% 90%;
+    --muted-foreground: 245 10% 40%;
+
+    --accent: 267 83% 53%;
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 72% 51%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 245 30% 88%;
+    --input: 245 30% 88%;
+    --ring: 267 83% 53%;
+
+    --radius: 0.5rem;
+
+    --sidebar-background: 229 42% 13%;
+    --sidebar-foreground: 229 20% 80%;
+    --sidebar-primary: 267 83% 53%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 229 42% 20%;
+    --sidebar-accent-foreground: 267 83% 53%;
+    --sidebar-border: 229 42% 18%;
+    --sidebar-ring: 267 83% 53%;
+
+    --cms-surface: 0 0% 100%;
+    --cms-surface-hover: 245 100% 94%;
+    --cms-success: 142 71% 45%;
+    --cms-warning: 38 92% 50%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground font-sans;
+    font-family: 'Poppins', system-ui, sans-serif;
+  }
+}
+
+@layer components {
+  .cms-scrollbar::-webkit-scrollbar {
+    width: 6px;
+  }
+  .cms-scrollbar::-webkit-scrollbar-track {
+    background: hsl(var(--cms-surface));
+  }
+  .cms-scrollbar::-webkit-scrollbar-thumb {
+    background: hsl(var(--border));
+    border-radius: 3px;
+  }
+}
