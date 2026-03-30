@@ -68,7 +68,7 @@ export function CMSSidebar({ collapsed }: CMSSidebarProps) {
   const { role } = useAuth();
   const isSuperAdmin = role === "admin";
   const location = useLocation();
-  const [expandedMenus, setExpandedMenus] = useState<string[]>(["Posts", "Pages"]);
+  const [expandedMenus, setExpandedMenus] = useState<string[]>([]);
 
   const filteredMenuItems = menuItems.filter(item => {
     if (item.label === "Users" && !isSuperAdmin) return false;
