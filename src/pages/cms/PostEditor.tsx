@@ -60,7 +60,7 @@ export default function PostEditor() {
           setCategoryId(post.category_id || "");
           setStatus(post.status);
           setContent(Array.isArray(post.content) ? (post.content as unknown as ContentBlock[]) : []);
-          setVideoData(post.video_data ? (post.video_data as unknown as VideoData) : null);
+          setVideoData((post as any).video_data ? ((post as any).video_data as unknown as VideoData) : null);
         }
       }
       setLoading(false);

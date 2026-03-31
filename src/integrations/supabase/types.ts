@@ -43,18 +43,21 @@ export type Database = {
           id: string
           key: string
           updated_at: string
+          video_data: Json | null
           value: string | null
         }
         Insert: {
           id?: string
           key: string
           updated_at?: string
+          video_data?: Json | null
           value?: string | null
         }
         Update: {
           id?: string
           key?: string
           updated_at?: string
+          video_data?: Json | null
           value?: string | null
         }
         Relationships: []
@@ -67,6 +70,7 @@ export type Database = {
           sort_order: number
           type: string
           updated_at: string
+          video_data: Json | null
           value: string
         }
         Insert: {
@@ -76,6 +80,7 @@ export type Database = {
           sort_order?: number
           type: string
           updated_at?: string
+          video_data?: Json | null
           value?: string
         }
         Update: {
@@ -85,6 +90,7 @@ export type Database = {
           sort_order?: number
           type?: string
           updated_at?: string
+          video_data?: Json | null
           value?: string
         }
         Relationships: []
@@ -119,6 +125,7 @@ export type Database = {
           status: string
           title: string
           updated_at: string
+          video_data: Json | null
         }
         Insert: {
           content?: Json | null
@@ -128,6 +135,7 @@ export type Database = {
           status?: string
           title: string
           updated_at?: string
+          video_data?: Json | null
         }
         Update: {
           content?: Json | null
@@ -137,6 +145,7 @@ export type Database = {
           status?: string
           title?: string
           updated_at?: string
+          video_data?: Json | null
         }
         Relationships: []
       }
@@ -148,6 +157,7 @@ export type Database = {
           name: string
           sort_order: number
           updated_at: string
+          video_data: Json | null
           website_url: string | null
         }
         Insert: {
@@ -157,6 +167,7 @@ export type Database = {
           name: string
           sort_order?: number
           updated_at?: string
+          video_data?: Json | null
           website_url?: string | null
         }
         Update: {
@@ -166,6 +177,7 @@ export type Database = {
           name?: string
           sort_order?: number
           updated_at?: string
+          video_data?: Json | null
           website_url?: string | null
         }
         Relationships: []
@@ -183,6 +195,7 @@ export type Database = {
           status: string
           title: string
           updated_at: string
+          video_data: Json | null
         }
         Insert: {
           author_id?: string | null
@@ -196,6 +209,7 @@ export type Database = {
           status?: string
           title: string
           updated_at?: string
+          video_data?: Json | null
         }
         Update: {
           author_id?: string | null
@@ -209,6 +223,7 @@ export type Database = {
           status?: string
           title?: string
           updated_at?: string
+          video_data?: Json | null
         }
         Relationships: [
           {
@@ -228,6 +243,7 @@ export type Database = {
           email: string | null
           id: string
           updated_at: string
+          video_data: Json | null
           user_id: string
         }
         Insert: {
@@ -237,6 +253,7 @@ export type Database = {
           email?: string | null
           id?: string
           updated_at?: string
+          video_data?: Json | null
           user_id: string
         }
         Update: {
@@ -246,6 +263,7 @@ export type Database = {
           email?: string | null
           id?: string
           updated_at?: string
+          video_data?: Json | null
           user_id?: string
         }
         Relationships: []
@@ -259,6 +277,7 @@ export type Database = {
           platform: string
           sort_order: number
           updated_at: string
+          video_data: Json | null
           url: string
         }
         Insert: {
@@ -269,6 +288,7 @@ export type Database = {
           platform: string
           sort_order?: number
           updated_at?: string
+          video_data?: Json | null
           url?: string
         }
         Update: {
@@ -279,6 +299,7 @@ export type Database = {
           platform?: string
           sort_order?: number
           updated_at?: string
+          video_data?: Json | null
           url?: string
         }
         Relationships: []
