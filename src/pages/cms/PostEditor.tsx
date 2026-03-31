@@ -12,6 +12,7 @@ import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, 
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { uploadMedia, slugify } from "@/lib/supabase-helpers";
+import { VideoUploadWidget, VideoData } from "@/components/cms/VideoUploadWidget";
 import { useAuth } from "@/contexts/AuthContext";
 import { useUnsavedChanges } from "@/hooks/useUnsavedChanges";
 
@@ -33,6 +34,7 @@ export default function PostEditor() {
   const [categoryId, setCategoryId] = useState<string>("");
   const [status, setStatus] = useState("draft");
   const [content, setContent] = useState<ContentBlock[]>([]);
+  const [videoData, setVideoData] = useState<VideoData | null>(null);
   const [seo, setSeo] = useState<SEOData>(emptySEO);
   const [categories, setCategories] = useState<Category[]>([]);
   const [loading, setLoading] = useState(true);
@@ -58,6 +60,7 @@ export default function PostEditor() {
           setCategoryId(post.category_id || "");
           setStatus(post.status);
           setContent(Array.isArray(post.content) ? (post.content as unknown as ContentBlock[]) : []);
+          setVideoData(post.video_data ? (post.video_data as unknown as VideoData) : null);
         }
       }
       setLoading(false);
@@ -77,6 +80,7 @@ export default function PostEditor() {
       category_id: categoryId || null,
       status,
       content: content as any,
+      video_data: videoData as any,
       author_id: user?.id || null,
     };
 
@@ -169,6 +173,15 @@ export default function PostEditor() {
             <Input type="file" accept="image/*" onChange={handleImageUpload} disabled={isViewer} />
             {featuredImage && <img src={featuredImage} alt="" className="h-16 w-16 rounded object-cover border border-border" />}
           </div>
+        </div>
+
+        <div className="space-y-2">
+          <Label>Video Content</Label>
+          <VideoUploadWidget 
+            videoData={videoData || undefined} 
+            onChange={(data) => { setVideoData(data); markDirty(); }} 
+            disabled={isViewer} 
+          />
         </div>
 
         <div className="space-y-2">

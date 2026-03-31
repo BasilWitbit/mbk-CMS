@@ -24,6 +24,7 @@ interface Post {
   category_id: string | null;
   status: string;
   created_at: string;
+  featured_image: string | null;
 }
 
 interface Category {
@@ -48,7 +49,7 @@ export default function PostsList() {
 
   const fetchData = async () => {
     const [postsRes, catsRes] = await Promise.all([
-      supabase.from("posts").select("id, title, category_id, status, created_at").order("created_at", { ascending: false }),
+      supabase.from("posts").select("id, title, category_id, status, created_at, featured_image").order("created_at", { ascending: false }),
       supabase.from("categories").select("id, name"),
     ]);
     if (postsRes.data) setPosts(postsRes.data);
@@ -188,6 +189,7 @@ export default function PostsList() {
                   />
                 )}
               </TableHead>
+              <TableHead>Featured Image</TableHead>
               <TableHead>Title</TableHead>
               <TableHead>Category</TableHead>
               <TableHead>Status</TableHead>
@@ -212,6 +214,23 @@ export default function PostsList() {
                         onCheckedChange={() => toggleSelect(post.id)}
                       />
                     )}
+                  </TableCell>
+                  <TableCell>
+                    <div className="w-16 h-12 rounded bg-muted overflow-hidden border border-border flex items-center justify-center">
+                      {post.featured_image ? (
+                        <a href={post.featured_image} target="_blank" rel="noopener noreferrer" className="w-full h-full">
+                          <img 
+                            src={post.featured_image} 
+                            alt="" 
+                            className="w-full h-full object-cover hover:scale-110 transition-transform cursor-pointer" 
+                          />
+                        </a>
+                      ) : (
+                        <div className="w-full h-full bg-muted flex items-center justify-center text-[10px] text-muted-foreground font-medium">
+                          NO IMAGE
+                        </div>
+                      )}
+                    </div>
                   </TableCell>
                   <TableCell className="font-medium text-foreground">
                     <Link to={`/cms/posts/${post.id}`} className="hover:text-primary transition-colors">
