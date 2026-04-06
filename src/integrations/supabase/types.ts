@@ -21,6 +21,7 @@ export type Database = {
           id: string
           name: string
           slug: string
+          video_data: Json | null
         }
         Insert: {
           created_at?: string
@@ -28,6 +29,7 @@ export type Database = {
           id?: string
           name: string
           slug: string
+          video_data?: Json | null
         }
         Update: {
           created_at?: string
@@ -35,6 +37,7 @@ export type Database = {
           id?: string
           name?: string
           slug?: string
+          video_data?: Json | null
         }
         Relationships: []
       }

@@ -10,12 +10,14 @@ import { supabase } from "@/integrations/supabase/client";
 import { slugify } from "@/lib/supabase-helpers";
 import { useAuth } from "@/contexts/AuthContext";
 import { Search } from "lucide-react";
+import { VideoUploadWidget, VideoData } from "@/components/cms/VideoUploadWidget";
 
 interface Category {
   id: string;
   name: string;
   slug: string;
   description: string | null;
+  video_data: VideoData | null;
   created_at: string;
 }
 
@@ -28,35 +30,36 @@ export default function CategoriesList() {
   const [editId, setEditId] = useState<string | null>(null);
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
+  const [videoData, setVideoData] = useState<VideoData | null>(null);
   const [saving, setSaving] = useState(false);
 
   const fetchCategories = async () => {
     const { data, error } = await supabase.from("categories").select("*").order("created_at");
     if (error) { toast.error("Failed to load categories"); return; }
-    setCategories(data || []);
+    setCategories((data as unknown as Category[]) || []);
     setLoading(false);
   };
 
   useEffect(() => { fetchCategories(); }, []);
 
   const openDialog = (cat?: Category) => {
-    if (cat) { setEditId(cat.id); setName(cat.name); setDescription(cat.description || ""); }
-    else { setEditId(null); setName(""); setDescription(""); }
+    if (cat) { setEditId(cat.id); setName(cat.name); setDescription(cat.description || ""); setVideoData(cat.video_data); }
+    else { setEditId(null); setName(""); setDescription(""); setVideoData(null); }
     setDialogOpen(true);
   };
 
-  const closeDialog = () => { setDialogOpen(false); setEditId(null); setName(""); setDescription(""); };
+  const closeDialog = () => { setDialogOpen(false); setEditId(null); setName(""); setDescription(""); setVideoData(null); };
 
   const handleSave = async () => {
     if (!name.trim()) { toast.error("Name is required"); return; }
     setSaving(true);
     try {
       if (editId) {
-        const { error } = await supabase.from("categories").update({ name, slug: slugify(name), description: description || null }).eq("id", editId);
+        const { error } = await supabase.from("categories").update({ name, slug: slugify(name), description: description || null, video_data: videoData as any }).eq("id", editId);
         if (error) throw error;
         toast.success("Category updated");
       } else {
-        const { error } = await supabase.from("categories").insert({ name, slug: slugify(name), description: description || null });
+        const { error } = await supabase.from("categories").insert({ name, slug: slugify(name), description: description || null, video_data: videoData as any });
         if (error) throw error;
         toast.success("Category created");
       }
@@ -129,6 +132,14 @@ export default function CategoriesList() {
           <div className="space-y-4">
             <div className="space-y-2"><Label>Name</Label><Input value={name} onChange={(e) => setName(e.target.value)} disabled={isViewer} /></div>
             <div className="space-y-2"><Label>Description</Label><Input value={description} onChange={(e) => setDescription(e.target.value)} disabled={isViewer} /></div>
+            <div className="space-y-2">
+              <Label>Video Content</Label>
+              <VideoUploadWidget 
+                videoData={videoData || undefined} 
+                onChange={setVideoData} 
+                disabled={isViewer} 
+              />
+            </div>
           </div>
           <DialogFooter>
             <Button variant="outline" onClick={closeDialog}>Cancel</Button>
