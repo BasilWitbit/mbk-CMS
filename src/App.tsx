@@ -13,6 +13,7 @@ import Dashboard from "./pages/cms/Dashboard";
 import PostsList from "./pages/cms/PostsList";
 import PostEditor from "./pages/cms/PostEditor";
 import CategoriesList from "./pages/cms/CategoriesList";
+import CategoryEditor from "./pages/cms/CategoryEditor";
 import PageEditor from "./pages/cms/PageEditor";
 import PagesList from "./pages/cms/PagesList";
 import PartnersList from "./pages/cms/PartnersList";
@@ -44,6 +45,8 @@ const App = () => (
               <Route path="posts" element={<PostsList />} />
               <Route path="posts/:id" element={<PostEditor />} />
               <Route path="categories" element={<CategoriesList />} />
+              <Route path="categories/new" element={<CategoryEditor />} />
+              <Route path="categories/:id" element={<CategoryEditor />} />
               <Route path="pages" element={<PagesList />} />
               <Route path="pages/:slug" element={<PageEditor />} />
               <Route path="partners" element={<PartnersList />} />
