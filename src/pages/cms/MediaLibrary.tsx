@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Plus, Trash2, Upload, CheckCircle } from "lucide-react";
+import { Plus, Trash2, Upload, CheckCircle, CheckSquare, Square } from "lucide-react";
+import { Checkbox } from "@/components/ui/checkbox";
 import { toast } from "sonner";
 import { useMedia } from "@/contexts/MediaContext";
 import { uploadMedia } from "@/lib/supabase-helpers";
@@ -37,7 +38,17 @@ export default function MediaLibrary() {
     });
   };
 
+  const toggleAll = () => {
+    if (isViewer) return;
+    if (selectedFiles.size === media.length) {
+      setSelectedFiles(new Set());
+    } else {
+      setSelectedFiles(new Set(media.map((f) => f.url)));
+    }
+  };
+
   const deleteSelected = async () => {
+    if (!window.confirm(`Are you sure you want to delete ${selectedFiles.size} file(s)?`)) return;
     for (const url of selectedFiles) {
       await deleteMedia(url);
     }
@@ -50,10 +61,24 @@ export default function MediaLibrary() {
   return (
     <div>
       <div className="flex items-center justify-between mb-6">
-        <h1 className="text-2xl font-bold text-foreground">Media Library</h1>
+        <div className="flex items-center gap-4">
+          <h1 className="text-2xl font-bold text-foreground">Media Library</h1>
+          {media.length > 0 && !isViewer && (
+            <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg border border-border bg-card">
+              <Checkbox 
+                checked={selectedFiles.size === media.length && media.length > 0} 
+                onCheckedChange={toggleAll}
+                id="select-all"
+              />
+              <label htmlFor="select-all" className="text-sm font-medium cursor-pointer">
+                Select All
+              </label>
+            </div>
+          )}
+        </div>
         <div className="flex items-center gap-2">
           {selectedFiles.size > 0 && !isViewer && (
-            <Button variant="destructive" size="sm" onClick={deleteSelected}>
+            <Button variant="destructive" size="sm" onClick={deleteSelected} className="animate-in fade-in zoom-in duration-200">
               <Trash2 className="h-4 w-4 mr-1" /> Delete ({selectedFiles.size})
             </Button>
           )}
@@ -62,12 +87,12 @@ export default function MediaLibrary() {
               <Button asChild size="sm" disabled={uploading}>
                 <span><Upload className="h-4 w-4 mr-1" /> {uploading ? "Uploading..." : "Upload Files"}</span>
               </Button>
-              <Input type="file" accept="image/*,image/svg+xml,image/gif" multiple onChange={handleUpload} className="hidden" />
+              <Input type="file" accept="image/*,video/*,image/svg+xml,image/gif" multiple onChange={handleUpload} className="hidden" />
             </label>
           )}
         </div>
       </div>
-      {!isViewer && <p className="text-sm text-muted-foreground mb-4">Click an image to select it, then delete. Upload new images with the button above.</p>}
+      {!isViewer && <p className="text-sm text-muted-foreground mb-4">Click an image or its checkbox to select. Total files: {media.length}</p>}
       {media.length === 0 ? (
         <p className="text-sm text-muted-foreground text-center py-12">No media files. Upload some to get started.</p>
       ) : (
@@ -75,23 +100,24 @@ export default function MediaLibrary() {
           {media.map((file) => {
             const isSelected = selectedFiles.has(file.url);
             return (
-              <button
+               <button
                 key={file.url}
                 onClick={() => toggleSelect(file.url)}
-                className={`rounded-lg border-2 overflow-hidden bg-card text-left transition-all ${
+                className={`group relative rounded-lg border-2 overflow-hidden bg-card text-left transition-all ${
                   isSelected ? "border-primary ring-2 ring-primary/30" : "border-border hover:border-muted-foreground/40"
                 }`}
               >
                 <div className="relative">
-                  <img src={file.url} alt={file.name} className="w-full h-24 object-cover" />
+                  <img src={file.url} alt={file.name} className="w-full h-32 object-cover" />
+                  <div className={`absolute top-2 left-2 transition-opacity ${isSelected ? "opacity-100" : "opacity-0 group-hover:opacity-100"}`}>
+                    <Checkbox checked={isSelected} onCheckedChange={() => {}} className="bg-white/90 data-[state=checked]:bg-primary" />
+                  </div>
                   {isSelected && (
-                    <div className="absolute top-1 right-1">
-                      <CheckCircle className="h-5 w-5 text-primary fill-primary-foreground" />
-                    </div>
+                    <div className="absolute inset-0 bg-primary/5 pointer-events-none" />
                   )}
                 </div>
-                <div className="p-2">
-                  <p className="text-xs text-muted-foreground truncate">{file.name}</p>
+                <div className="p-2 border-t border-border">
+                  <p className="text-[10px] text-muted-foreground truncate font-medium">{file.name}</p>
                 </div>
               </button>
             );

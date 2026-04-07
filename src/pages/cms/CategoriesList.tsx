@@ -3,7 +3,8 @@ import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { Plus, Edit, Trash2, Search } from "lucide-react";
+import { Plus, Edit, Trash2, Search, Video } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
@@ -63,18 +64,28 @@ export default function CategoriesList() {
               <TableHead>Name</TableHead>
               <TableHead>Slug</TableHead>
               <TableHead>Description</TableHead>
+              <TableHead>Video</TableHead>
               <TableHead className="w-24">Actions</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             {categories.length === 0 ? (
-              <TableRow><TableCell colSpan={4} className="text-center text-muted-foreground">No categories</TableCell></TableRow>
+              <TableRow><TableCell colSpan={5} className="text-center text-muted-foreground">No categories</TableCell></TableRow>
             ) : (
               categories.map((cat) => (
                 <TableRow key={cat.id}>
                   <TableCell className="font-medium text-foreground">{cat.name}</TableCell>
                   <TableCell className="text-muted-foreground">{cat.slug}</TableCell>
                   <TableCell className="text-muted-foreground">{cat.description || '—'}</TableCell>
+                  <TableCell>
+                    {cat.video_data?.url ? (
+                      <Badge variant="secondary" className="flex items-center gap-1 w-fit">
+                        <Video className="h-3 w-3" /> Video
+                      </Badge>
+                    ) : (
+                      <span className="text-xs text-muted-foreground">—</span>
+                    )}
+                  </TableCell>
                   <TableCell>
                     <div className="flex gap-1">
                       <Button variant="ghost-icon" size="icon" className="h-8 w-8" asChild>
