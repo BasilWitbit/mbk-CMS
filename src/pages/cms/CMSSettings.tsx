@@ -3,7 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 export default function CMSSettings() {
   return (
     <div className="max-w-3xl">
-      <h1 className="text-2xl font-bold text-foreground mb-6">Settings</h1>
+      <h1 className="text-2xl font-bold text-foreground mb-6">Settings Testing</h1>
       <Card>
         <CardHeader><CardTitle className="text-lg">Theme Colors</CardTitle></CardHeader>
         <CardContent className="space-y-4">
